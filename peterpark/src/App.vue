@@ -144,15 +144,52 @@ export default {
       { value: "DE", label: "Germany" },
       { value: "FR", label: "France" },
       { value: "SW", label: "Switzerland" },
-      { value: "AU", label: "Austria" },
-      { value: "", label: "Other" },
+      { value: "AT", label: "Austria" },
     ];
-    const onchange = (e, val) => {
-      console.log(e);
-      console.log(val);
-      console.log("Test");
+
+    const validate = (obj) => {
+      switch (obj.country) {
+        case "DE":
+          return /^[A-ZÄÖÜ]{1,3}-[ ]{0,1}[A-Z]{0,2}[0-9]{1,4}[H]{0,1}$/i.test(
+            obj.licensePlate
+          );
+        case "FR":
+          return /^[A-ZÄÖÜ]{1,3}-[ ]{0,1}[A-Z]{0,2}[0-9]{1,4}[H]{0,1}$/i.test(
+            obj.licensePlate
+          );
+        case "AT":
+          return /^[A-ZÄÖÜ]{1,3}-[ ]{0,1}[A-Z]{0,2}[0-9]{1,4}[H]{0,1}$/i.test(
+            obj.licensePlate
+          );
+        case "SW":
+          return /^(?!ss|ww|.[iou]|[iou].)[a-z]{2}[-\s]?\d{3}[-\s]?(?!ss|ww|.[iou]|[iou].)[a-z]{2}$/i.test(
+            obj.licensePlate
+          );
+      }
+      return false;
     };
-    return { permits, fields, countries, onchange };
+    const onsave = (obj) => {
+      console.log("Save");
+      console.log(obj);
+    };
+    const ondelete = (obj) => {
+      console.log("Delete");
+      console.log(obj);
+    };
+    const onchange = (obj, val) => {
+      var result = validate(obj);
+
+      if (!result) {
+        obj.validated = false;
+      } else {
+        obj.validated = true;
+      }
+      console.log(obj);
+      console.log(val);
+      console.log(result);
+      obj.changed = true;
+    };
+    return { permits, fields, countries, onchange, onsave, ondelete };
   },
 };
 </script>

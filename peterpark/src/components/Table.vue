@@ -14,9 +14,8 @@
   </div>
 
   <table id="tableComponent" class="table table-bordered table-striped">
-     <thead>
+    <thead>
       <tr>
-        <!-- Loop through columns -->
         <th
           v-for="field in fields"
           :key="field.property"
@@ -28,7 +27,6 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Loop through the rows -->
       <tr v-for="item in filterItems" :key="item">
         <td v-for="field in fields" :key="field.property">
           <div v-if="field.columnType === 'date'">
@@ -45,6 +43,9 @@
               type="checkbox"
               v-model="item[field.property]"
             />
+            <div v-if="field.changed === true">
+              <button variant="success"   @click="onsave(item)">Save</button>
+              <button variant="success"   @click="ondelete(item)">Delete</button>            </div>
           </div>
           <div v-else-if="field.columnType === 'country'">
             <select
@@ -92,6 +93,12 @@ export default {
       type: Array,
     },
     onchange: {
+      type: Function,
+    },
+     onsave: {
+      type: Function,
+    },
+     ondelete: {
       type: Function,
     },
   },
